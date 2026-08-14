@@ -9,11 +9,32 @@ def show_homework():
 
 def add_homework():
     homework_subject = str(input("Your homework subject:"))
+    date = False
     
-    homework_due_date = str(input("Your homework due date (in the format YYYY-MM-DD):"))
-    homework_due_date_formatted = dt.datetime.strptime(homework_due_date, "%Y-%m-%d")
+    while date == False:
+        homework_due_date = input("Your homework due date (in the format YYYY-MM-DD):")
+        
+        try:
+            homework_due_date_formatted = dt.datetime.strptime(homework_due_date, "%Y-%m-%d").date()
+        
+        except ValueError:
+            print("Invalid date entered. Ensure date is in the format YYYY-MM-DD.")
+            continue
+        
+        today = dt.date.today()
+        
+        if homework_due_date_formatted >= today:
+            date = True
+        else:
+            print("Invalid date entered. Ensure date has not already passed.")
 
-    homework_priority = str(input("Your homework priority:"))
+    homework_priority = str(input("Your homework priority: Options are [Low] or [Medium] or [High]")).lower()
+    
+    
+    while homework_priority != 'low' and  homework_priority != 'medium' and  homework_priority != 'high':
+        print("Invalid input entered.")
+        print(homework_priority)
+        homework_priority = str(input("Your homework priority: Options are [Low] or [Medium] or [High]")).lower()   
     
     homework_list.append({'subject': homework_subject, 'due date': homework_due_date, 'priority': homework_priority})
     
@@ -41,8 +62,13 @@ while again == True:
     print("Option 1: Show all homework")
     print("Option 2: Add a homework")
     print("Option 3: Exit")
-
-    user_input = int(input("How could I help you? Only type the number:"))
+    
+    try:
+        user_input = int(input("How could I help you? Only type the number:"))
+        
+    except ValueError:
+        print("Inavlid input")
+        continue
 
     if user_input == 1:
         show_homework()
@@ -58,14 +84,5 @@ while again == True:
         user_input = int(input("How could I help you? Only type the number:"))
         
 
-#Learnt how to create dictionary
-#How to use datetime module 
-#How to sort lists
-#How to use a lambda expression
-#How and when to use a json file
         
-        
-        #Next steps:
-            #To delete a task
-            #To retrieve certain tasks - like closest due date? highest priority? latest one added?
-            #Maybe to choose how the list is sorted? - by subject? by due date? by priority?
+    
